@@ -1,71 +1,70 @@
 <?php
 
+use App\Http\Controllers\Panel\Autenticacion\AccesoController;
+use App\Http\Controllers\Panel\ComentarioIncidenteController;
+use App\Http\Controllers\Panel\IncidenteController;
+use App\Http\Controllers\Panel\InicioController;
+use App\Http\Controllers\Panel\PermisoController;
+use App\Http\Controllers\Panel\RolController;
+use App\Http\Controllers\Panel\TipoIncidenteController;
+use App\Http\Controllers\Panel\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Rutas web
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->route('acceso');
 });
 
-Route::get(
-    '/login',
-    [\App\Http\Controllers\Admin\Auth\LoginController::class, 'showLoginForm']
-)->name('login');
+// Autenticación
+Route::get('/iniciar-sesion', [AccesoController::class, 'mostrarFormulario'])->name('acceso');
+Route::post('/iniciar-sesion', [AccesoController::class, 'iniciarSesion']);
+Route::get('/cerrar-sesion', [AccesoController::class, 'cerrarSesion'])->name('salir');
 
-Route::post(
-    '/login',
-    [\App\Http\Controllers\Admin\Auth\LoginController::class, 'login']
-);
+// Panel de administración
+Route::prefix('panel')->group(function () {
 
-Route::get(
-    '/logout',
-    [\App\Http\Controllers\Admin\Auth\LoginController::class, 'logout']
-)->name('logout');
+    Route::get('/inicio', [InicioController::class, 'inicio'])->name('panel.inicio');
 
-Route::group(['prefix'=>'admin'], function() {
+    // Usuarios
+    Route::get('/usuarios', [UsuarioController::class, 'listar'])->name('usuarios.listar');
+    Route::get('/usuarios/crear', [UsuarioController::class, 'crear'])->name('usuarios.crear');
+    Route::post('/usuarios', [UsuarioController::class, 'guardar'])->name('usuarios.guardar');
+    Route::get('/usuarios/{id}/editar', [UsuarioController::class, 'editar'])->name('usuarios.editar');
+    Route::match(['put', 'patch'], '/usuarios/{id}', [UsuarioController::class, 'actualizar'])->name('usuarios.actualizar');
+    Route::delete('/usuarios/{id}', [UsuarioController::class, 'eliminar'])->name('usuarios.eliminar');
 
-    Route::resource(
-        '/users',
-        \App\Http\Controllers\Admin\UsersController::class,
-    );
+    // Incidentes
+    Route::get('/incidentes', [IncidenteController::class, 'listar'])->name('incidentes.listar');
+    Route::post('/incidentes', [IncidenteController::class, 'guardar'])->name('incidentes.guardar');
+    Route::get('/incidentes/{id}', [IncidenteController::class, 'mostrar'])->name('incidentes.mostrar');
+    Route::match(['put', 'patch'], '/incidentes/{id}', [IncidenteController::class, 'actualizar'])->name('incidentes.actualizar');
+    Route::delete('/incidentes/{id}', [IncidenteController::class, 'eliminar'])->name('incidentes.eliminar');
 
-    Route::get(
-        '/home',
-        [\App\Http\Controllers\Admin\HomeController::class, 'index']
-    )->name('admin.home');
+    // Comentarios de incidentes
+    Route::get('/incidentes/{incidente}/comentarios', [ComentarioIncidenteController::class, 'listar'])->name('comentarios.listar');
+    Route::post('/incidentes/{incidente}/comentarios', [ComentarioIncidenteController::class, 'guardar'])->name('comentarios.guardar');
+    Route::delete('/incidentes/{incidente}/comentarios/{id}', [ComentarioIncidenteController::class, 'eliminar'])->name('comentarios.eliminar');
 
-    Route::resource(
-        '/incidents',
-        \App\Http\Controllers\Admin\IncidentController::class,
-    )->only(['index', 'show', 'store', 'update', 'destroy']);
+    // Tipos de incidente
+    Route::get('/tipos-incidente', [TipoIncidenteController::class, 'listar'])->name('tipos-incidente.listar');
+    Route::post('/tipos-incidente', [TipoIncidenteController::class, 'guardar'])->name('tipos-incidente.guardar');
+    Route::match(['put', 'patch'], '/tipos-incidente/{id}', [TipoIncidenteController::class, 'actualizar'])->name('tipos-incidente.actualizar');
+    Route::delete('/tipos-incidente/{id}', [TipoIncidenteController::class, 'eliminar'])->name('tipos-incidente.eliminar');
 
-    Route::resource(
-        '/incident-types',
-        \App\Http\Controllers\Admin\IncidentTypeController::class,
-    )->only(['index', 'store', 'update', 'destroy']);
+    // Roles
+    Route::get('/roles', [RolController::class, 'listar'])->name('roles.listar');
+    Route::post('/roles', [RolController::class, 'guardar'])->name('roles.guardar');
+    Route::match(['put', 'patch'], '/roles/{id}', [RolController::class, 'actualizar'])->name('roles.actualizar');
+    Route::delete('/roles/{id}', [RolController::class, 'eliminar'])->name('roles.eliminar');
 
-    Route::get('/incidents/{incident}/comments', [\App\Http\Controllers\Admin\IncidentCommentController::class, 'index']);
-    Route::post('/incidents/{incident}/comments', [\App\Http\Controllers\Admin\IncidentCommentController::class, 'store']);
-    Route::delete('/incidents/{incident}/comments/{id}', [\App\Http\Controllers\Admin\IncidentCommentController::class, 'destroy']);
-
-    Route::resource(
-        '/role',
-        \App\Http\Controllers\Admin\RoleController::class,
-    );
-
-    Route::resource(
-        '/permission',
-        \App\Http\Controllers\Admin\PermissionController::class,
-    );
-
+    // Permisos
+    Route::get('/permisos', [PermisoController::class, 'listar'])->name('permisos.listar');
+    Route::post('/permisos', [PermisoController::class, 'guardar'])->name('permisos.guardar');
+    Route::match(['put', 'patch'], '/permisos/{id}', [PermisoController::class, 'actualizar'])->name('permisos.actualizar');
+    Route::delete('/permisos/{id}', [PermisoController::class, 'eliminar'])->name('permisos.eliminar');
 });
