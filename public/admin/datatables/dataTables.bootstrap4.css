@@ -201,10 +201,4 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   padding-right: 0;
 }
 
-/*@media screen and (max-width:1024px) {*/
-  div.box-body{
-
-    width:100%;overflow-x: scroll
-
-  /*}*/
-}
+/* Se eliminó la regla div.box-body { overflow-x: scroll } que mostraba una barra horizontal permanente. */

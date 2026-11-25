@@ -4,18 +4,15 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
+/**
+ * Seeder principal (Laravel exige el nombre DatabaseSeeder para "db:seed").
+ */
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
     public function run()
     {
-        $this->call(UserSeederTable::class);
-        $this->call(IncidentSeeder::class);
-        $this->call(IncidentPermissionSeeder::class);
-
+        $this->call(UsuarioSeeder::class);
+        $this->call(IncidenteSeeder::class);
+        $this->call(PermisoSeeder::class);
     }
 }

@@ -23,7 +23,7 @@ class RedirectIfAuthenticated
 
                     case 'admin';
 
-                        return redirect('/admin/home');
+                        return redirect('/panel/inicio');
 
                     default;
 
@@ -48,7 +48,7 @@ class RedirectIfAuthenticated
 //
 //                if (Auth::guard($guard)->check()){
 //
-//                    return redirect('/admin/home');
+//                    return redirect('/panel/inicio');
 //
 //                }
 //                break;
