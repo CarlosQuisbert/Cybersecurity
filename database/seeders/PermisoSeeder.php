@@ -27,7 +27,7 @@ class PermisoSeeder extends Seeder
         $rol = Rol::firstOrCreate(['name' => 'Administrador', 'guard_name' => 'admin']);
         $rol->syncPermissions($permisos);
 
-        Usuario::whereIn('usuario', ['john.doe', 'desmond.ava'])->get()->each(function ($usuario) use ($rol) {
+        Usuario::whereIn('usuario', ['gabriela.casas', 'carlos.quisbert'])->get()->each(function ($usuario) use ($rol) {
             if (! $usuario->hasRole($rol)) {
                 $usuario->assignRole($rol);
             }
