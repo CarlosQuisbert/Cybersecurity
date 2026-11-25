@@ -11,14 +11,14 @@ class UsuarioSeeder extends Seeder
     {
         $usuarios = [
             [
-                'usuario' => 'john.doe',
-                'nombre' => 'John Doe',
-                'identificacion' => '1234567',
+                'usuario' => 'gabriela.casas',
+                'nombre' => 'Gabriela Casas Cornejo',
+                'identificacion' => '8341951',
             ],
             [
-                'usuario' => 'desmond.ava',
-                'nombre' => 'Desmond Ava',
-                'identificacion' => '7654321',
+                'usuario' => 'carlos.quisbert',
+                'nombre' => 'Carlos Quisbert Maquera',
+                'identificacion' => '6768243',
             ],
         ];
 

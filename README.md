@@ -17,8 +17,8 @@
 - Admin user details
 
   - login at   `/admin/login`
-  - email = `john@gmail.com`
-  - password = `john123`
+  - email = `gabrila.casas`
+  - password = `8341951`
 
 -  You can Register new admin user at `admin/admins/create`
 

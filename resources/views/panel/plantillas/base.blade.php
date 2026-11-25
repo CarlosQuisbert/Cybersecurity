@@ -95,6 +95,15 @@
             background: #388fff !important;
         }
 
+        /* Botones de las alertas de confirmación: Sí en verde, No en rojo */
+        .swal-button { color: #fff !important; font-weight: 600; min-width: 90px; }
+        .swal-button--confirm { background-color: #28a745 !important; }
+        .swal-button--confirm:not([disabled]):hover { background-color: #218838 !important; }
+        .swal-button--cancel { background-color: #dc3545 !important; }
+        .swal-button--cancel:not([disabled]):hover { background-color: #c82333 !important; }
+        .swal-button--confirm:focus { box-shadow: 0 0 0 1px #fff, 0 0 0 3px rgba(40, 167, 69, .5) !important; }
+        .swal-button--cancel:focus { box-shadow: 0 0 0 1px #fff, 0 0 0 3px rgba(220, 53, 69, .5) !important; }
+
         /* Tablas ajustadas al ancho de la pantalla (sin barra horizontal) */
         table.tabla-apilable { width: 100% !important; table-layout: auto; }
         table.tabla-apilable td { white-space: normal; word-break: normal; overflow-wrap: break-word; vertical-align: middle; }
