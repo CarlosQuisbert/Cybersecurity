@@ -104,6 +104,20 @@
         .swal-button--confirm:focus { box-shadow: 0 0 0 1px #fff, 0 0 0 3px rgba(40, 167, 69, .5) !important; }
         .swal-button--cancel:focus { box-shadow: 0 0 0 1px #fff, 0 0 0 3px rgba(220, 53, 69, .5) !important; }
 
+        /* Niveles de prioridad calculados por el modelo */
+        .badge-prioridad-critico { background: #b71c1c; color: #fff; }
+        .badge-prioridad-alto { background: #ef6c00; color: #fff; }
+        .badge-prioridad-medio { background: #f9a825; color: #212121; }
+        .badge-prioridad-bajo { background: #2e7d32; color: #fff; }
+        .badge-prioridad-ninguna { background: #e0e0e0; color: #424242; }
+        .indice-riesgo { font-variant-numeric: tabular-nums; font-weight: 700; }
+        .barra-aporte { height: 8px; border-radius: 4px; background: #388fff; }
+        .opcion-nivel { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border: 1px solid #e4e6fc; border-radius: 6px; margin-bottom: 6px; cursor: pointer; }
+        .opcion-nivel:hover { background: #f5f8ff; }
+        .opcion-nivel.seleccionada { border-color: #388fff; background: #eaf2ff; }
+        .opcion-nivel .numero-nivel { flex: 0 0 26px; height: 26px; border-radius: 50%; background: #1a3f6e; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+        .texto-pequeno { font-size: 12px; }
+
         /* Tablas ajustadas al ancho de la pantalla (sin barra horizontal) */
         table.tabla-apilable { width: 100% !important; table-layout: auto; }
         table.tabla-apilable td { white-space: normal; word-break: normal; overflow-wrap: break-word; vertical-align: middle; }
@@ -114,6 +128,13 @@
         @media (min-width: 768px) {
             .dataTables_wrapper > .row > .col-md-6:first-child,
             .dataTables_wrapper > .row > .col-md-5:first-child { padding-right: 15px; }
+        }
+
+        @media (min-width: 992px) and (max-width: 1279.98px) {
+            /* Pantallas medianas: encabezados en dos líneas y celdas más compactas */
+            table.tabla-apilable th { white-space: normal; }
+            table.tabla-apilable th, table.tabla-apilable td { padding-left: 8px !important; padding-right: 8px !important; }
+            table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc { padding-right: 22px !important; }
         }
 
         @media (max-width: 767.98px) {
@@ -176,6 +197,10 @@
 
     </div>
 </div>
+
+<script>
+    window.permisosUsuario = @json(auth('admin')->check() ? auth('admin')->user()->getAllPermissions()->pluck('name') : []);
+</script>
 
 <!-- Scripts JS generales -->
 <script src="{{asset('admin/js/jquery-3.3.1.min.js')}}"></script>

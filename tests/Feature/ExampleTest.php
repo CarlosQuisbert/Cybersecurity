@@ -2,20 +2,15 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
     /**
-     * A basic test example.
-     *
-     * @return void
+     * La raíz del sitio lleva al formulario de inicio de sesión.
      */
-    public function testBasicTest()
+    public function test_la_raiz_redirige_al_inicio_de_sesion()
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $this->get('/')->assertRedirect(route('acceso'));
     }
 }
