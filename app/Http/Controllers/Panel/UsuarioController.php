@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\Rol;
 use App\Models\Usuario;
+use App\Servicios\Bitacora;
 use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin');
+        $this->middleware(['auth:admin', 'permission:usuarios.gestionar,admin']);
     }
 
     public function listar()
@@ -45,6 +46,8 @@ class UsuarioController extends Controller
         $usuario->save();
 
         if ($request->filled('rol')) $usuario->syncRoles([$request->rol]);
+
+        Bitacora::registrar('usuario.crear', 'usuario', $usuario->id, ['usuario' => $usuario->usuario, 'rol' => $request->input('rol')]);
 
         return redirect(route('usuarios.listar'))->with('mensaje', 'El usuario se creó correctamente. Usuario: ' . $usuario->usuario);
     }
@@ -83,12 +86,16 @@ class UsuarioController extends Controller
             $usuario->roles()->detach();
         }
 
+        Bitacora::registrar('usuario.editar', 'usuario', $id, ['rol' => $request->input('rol')]);
+
         return redirect(route('usuarios.listar'))->with('mensaje_actualizado', 'El usuario se actualizó correctamente.');
     }
 
     public function eliminar($id)
     {
         Usuario::findOrFail($id)->delete();
+
+        Bitacora::registrar('usuario.eliminar', 'usuario', $id);
 
         return back()->with('mensaje_eliminado', 'El usuario se eliminó correctamente.');
     }

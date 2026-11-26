@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\Permiso;
 use App\Models\Rol;
+use App\Servicios\Bitacora;
 use Illuminate\Http\Request;
 
 class RolController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:admin']);
+        $this->middleware(['auth:admin', 'permission:roles.gestionar,admin']);
     }
 
     public function listar()
@@ -39,6 +40,8 @@ class RolController extends Controller
             $rol->syncPermissions($request->permisos);
         }
 
+        Bitacora::registrar('rol.crear', 'rol', $rol->id, ['rol' => $rol->name, 'permisos' => $rol->permissions->pluck('name')]);
+
         return $rol->load('permisos');
     }
 
@@ -57,6 +60,8 @@ class RolController extends Controller
         } else {
             $rol->permissions()->detach();
         }
+
+        Bitacora::registrar('rol.editar', 'rol', $id, ['permisos' => $request->input('permisos')]);
 
         return Rol::with('permisos')->findOrFail($id);
     }

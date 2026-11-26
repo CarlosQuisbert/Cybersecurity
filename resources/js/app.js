@@ -110,6 +110,34 @@ function opcionesTablaDatos(extra) {
     }, extra || {});
 }
 
+/**
+ * Permisos del usuario autenticado (los publica la plantilla base). Solo sirven
+ * para mostrar u ocultar botones: el servidor vuelve a verificar cada acción.
+ */
+function puede(permiso) {
+    return (window.permisosUsuario || []).indexOf(permiso) > -1;
+}
+
+const ETIQUETAS_PRIORIDAD = { critico: 'Crítico', alto: 'Alto', medio: 'Medio', bajo: 'Bajo' };
+const ETIQUETAS_ESTADO = {
+    abierto: 'Abierto', en_proceso: 'En proceso', contenido: 'Contenido',
+    erradicado: 'Erradicado', recuperado: 'Recuperado', cerrado: 'Cerrado',
+};
+const ETIQUETAS_CALIFICACION = { por_calificar: 'Evento por calificar', incidente: 'Incidente', descartado: 'Evento descartado' };
+const ETIQUETAS_ORIGEN = { adversario: 'Adversario', no_adversario: 'No adversario' };
+
+function formatoFecha(valor) {
+    if (!valor) return '-';
+    const f = new Date(valor);
+    if (isNaN(f)) return valor;
+    const d = n => String(n).padStart(2, '0');
+    return `${d(f.getDate())}/${d(f.getMonth() + 1)}/${f.getFullYear()} ${d(f.getHours())}:${d(f.getMinutes())}`;
+}
+
+function formatoIndice(valor) {
+    return valor === null || valor === undefined ? '-' : Number(valor).toFixed(2).replace('.', ',');
+}
+
 // Disponibles también para las vistas Blade (formularios y listado de usuarios).
 window.opcionesTablaDatos = opcionesTablaDatos;
 window.etiquetarCeldas = etiquetarCeldas;
@@ -140,6 +168,14 @@ Vue.mixin({
         notificarExito: notificarExito,
         notificarError: notificarError,
         mensajeDeError: mensajeDeError,
+        puede: puede,
+        formatoFecha: formatoFecha,
+        formatoIndice: formatoIndice,
+        etiquetaPrioridad(n) { return n ? (ETIQUETAS_PRIORIDAD[n] || n) : 'Sin evaluar'; },
+        clasePrioridad(n) { return 'badge-prioridad-' + (n || 'ninguna'); },
+        etiquetaEstado(e) { return ETIQUETAS_ESTADO[e] || e; },
+        etiquetaCalificacion(c) { return ETIQUETAS_CALIFICACION[c] || c; },
+        etiquetaOrigen(o) { return o ? (ETIQUETAS_ORIGEN[o] || o) : 'Sin indicar'; },
     }
 });
 
@@ -155,6 +191,9 @@ Vue.component('roles', require('./components/Panel/Roles.vue').default);
 Vue.component('guardar-rol', require('./components/Panel/GuardarRol.vue').default);
 Vue.component('permisos', require('./components/Panel/Permisos.vue').default);
 Vue.component('guardar-permiso', require('./components/Panel/GuardarPermiso.vue').default);
+Vue.component('activos', require('./components/Panel/Activos.vue').default);
+Vue.component('tacticas', require('./components/Panel/Tacticas.vue').default);
+Vue.component('calculo-ahp', require('./components/Panel/CalculoAhp.vue').default);
 
 /**
  * Instancia principal de Vue montada sobre #app.

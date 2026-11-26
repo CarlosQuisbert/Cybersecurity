@@ -10,7 +10,7 @@ class PermisoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:admin']);
+        $this->middleware(['auth:admin', 'permission:roles.gestionar,admin']);
     }
 
     public function listar()

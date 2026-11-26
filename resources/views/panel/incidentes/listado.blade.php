@@ -26,7 +26,7 @@
 
                 <div class="card" style="padding: 20px">
 
-                    <incidentes datos_incidentes="{{ $incidentes->toJson() }}" datos_tipos="{{ $tipos->toJson() }}" datos_usuarios="{{ $usuarios->toJson() }}"></incidentes>
+                    <incidentes datos_incidentes="{{ $incidentes->toJson() }}" datos_tipos="{{ $tipos->toJson() }}" datos_usuarios="{{ $usuarios->toJson() }}" datos_tacticas="{{ $tacticas->toJson() }}" datos_activos="{{ $activos->toJson() }}"></incidentes>
 
                 </div>
 

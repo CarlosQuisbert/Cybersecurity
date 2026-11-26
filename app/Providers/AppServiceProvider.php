@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // La paginación usa los estilos de Bootstrap de la plantilla.
+        \Illuminate\Pagination\Paginator::useBootstrap();
     }
 }

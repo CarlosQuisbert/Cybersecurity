@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel\Autenticacion;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Servicios\Bitacora;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,14 +40,20 @@ class AccesoController extends Controller
         $this->validateLogin($request);
 
         if ($this->attemptLogin($request)) {
+            Bitacora::registrar('sesion.iniciar', 'usuario', $this->guard()->id(), [], $this->guard()->id());
             return $this->sendLoginResponse($request);
         }
+
+        Bitacora::registrar('sesion.intento_fallido', null, null, ['usuario' => $request->input($this->username())], null);
 
         return $this->sendFailedLoginResponse($request);
     }
 
     public function cerrarSesion(Request $request)
     {
+        if ($this->guard()->check()) {
+            Bitacora::registrar('sesion.cerrar', 'usuario', $this->guard()->id());
+        }
         $this->guard()->logout();
 
         $request->session()->invalidate();
